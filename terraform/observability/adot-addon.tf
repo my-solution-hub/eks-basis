@@ -17,7 +17,7 @@ resource "aws_eks_addon" "adot" {
 
   cluster_name  = var.cluster_name
   addon_name    = "adot"
-  addon_version = "v0.92.1-eksbuild.1"
+  addon_version = "v0.102.1-eksbuild.2"
 }
 
 module "iam_assumable_role_adot_collector" {
@@ -30,10 +30,10 @@ module "iam_assumable_role_adot_collector" {
   oidc_fully_qualified_subjects = ["system:serviceaccount:observability:adot-collector"]
 }
 
-# resource "aws_iam_role_policy_attachment" "adot_amp" {
-#   role       = module.iam_assumable_role_adot_collector.iam_role_name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonPrometheusRemoteWriteAccess"
-# }
+resource "aws_iam_role_policy_attachment" "adot_amp" {
+  role       = module.iam_assumable_role_adot_collector.iam_role_name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonPrometheusRemoteWriteAccess"
+}
 
 resource "aws_iam_role_policy_attachment" "adot_xray" {
   role       = module.iam_assumable_role_adot_collector.iam_role_name
